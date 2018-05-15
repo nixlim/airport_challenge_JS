@@ -1,9 +1,11 @@
 var Airport = function(){
+
   const  DEFAULT_CAPACITY = 10;
   this.capacity = DEFAULT_CAPACITY;
   this.planes = [];
 };
 
-var airport = new Airport();
+  Airport.prototype.orderLand = function(plane) {
+    plane.land()
 
-console.log(airport);
+  };

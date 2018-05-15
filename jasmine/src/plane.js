@@ -6,7 +6,6 @@ Plane.prototype.takeoff = function () {
   this.flying = true;
 };
 
-var plane = new Plane();
-console.log(plane);
-plane.takeoff();
-console.log(plane);
+Plane.prototype.land = function () {
+  this.flying = false;
+};

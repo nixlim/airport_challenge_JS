@@ -11,4 +11,18 @@ describe("Plane", function() {
     });
   });
 
+
+  describe('Plane responds to #land', function() {
+    it('changes flying status to false', function () {
+      plane.takeoff();
+      console.log(plane);
+      plane.land();
+      console.log(plane);
+      expect(plane.flying).toBeFalsy();
+    });
+
+
+
+  });
+
 });
