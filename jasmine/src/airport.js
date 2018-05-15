@@ -5,7 +5,10 @@ var Airport = function(){
   this.planes = [];
 };
 
-  Airport.prototype.orderLand = function(plane) {
-    plane.land()
+Airport.prototype.orderLand = function(plane) {
+  plane.land();
+};
 
-  };
+Airport.prototype.orderTakeoff = function (plane) {
+  plane.takeoff();
+}

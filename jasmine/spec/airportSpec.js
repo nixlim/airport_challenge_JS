@@ -22,4 +22,11 @@ describe("Airport", function() {
         expect(plane.land).toHaveBeenCalled();
       });
   });
+
+  describe('Airport can call #takeoff on Plane', function () {
+    it('should issue a command to take off', function () {
+      airport.orderTakeoff(plane);
+      expect(plane.takeoff).toHaveBeenCalled();
+    });
+  });
 });
