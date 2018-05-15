@@ -3,7 +3,7 @@ describe('Weather Station', function () {
 
   describe('Weather creates random weather', function () {
     it('should sample weather producing probabalistic weather conditions', function () {
-      expect(weatherStation.generateWeather()).toEqual('sunny' || 'stormy');
+      expect(weatherStation.generateWeather() == 'sunny' || weatherStaiton.generateWeather() == 'stormy').toBeTruthy();
     });
   });
 });

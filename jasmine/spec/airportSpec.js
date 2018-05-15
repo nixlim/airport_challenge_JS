@@ -1,6 +1,9 @@
 describe("Airport", function() {
     var airport = new Airport;
     var plane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
+    var weatherStation = jasmine.createSpyObj('weatherStation', ['generateWeather'] );
+    var badWeatherStation = jasmine.createSpyObj('badWeatherStation', {'generateWeather':'stormy'});
+
 
   describe('Create new instance of airport', function() {
     it('Creates new airport object', function() {
@@ -18,15 +21,16 @@ describe("Airport", function() {
 
   describe('Airport can call #land on Plane', function () {
       it('Issues command to #land', function () {
-        airport.orderLand(plane);
+        airport.orderLand(plane, weatherStation);
         expect(plane.land).toHaveBeenCalled();
       });
   });
 
-  describe('Airport can call #takeoff on Plane', function () {
-    it('should issue a command to take off', function () {
-      airport.orderTakeoff(plane);
-      expect(plane.takeoff).toHaveBeenCalled();
-    });
+  describe('Airport checks weather', function() {
+    it('Should check weather before #orderLand', function() {
+      airport.orderLand(plane, weatherStation);
+      expect(weatherStation.generateWeather).toHaveBeenCalled();
   });
+
+});
 });
