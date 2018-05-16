@@ -3,7 +3,7 @@ describe("Airport", function() {
   var plane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
   var anotherPlane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
   var yetAnotherPlane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
-  var weatherStation = jasmine.createSpyObj('weatherStation', ['generateWeather'] );
+  var weatherStation = jasmine.createSpyObj('weatherStation', {'generateWeather':'sunny'});
   var badWeatherStation = jasmine.createSpyObj('badWeatherStation', {'generateWeather':'stormy'});
   afterEach(function(){
 
@@ -27,6 +27,9 @@ describe("Airport", function() {
   describe('Airport lands Planes', function () {
     beforeEach(function () {
       airport.capacity = 2;
+    });
+    afterEach(function () {
+      airport.capacity = 10;
     });
     it('Issues command to #land', function () {
       airport.orderLand(plane, weatherStation);
@@ -67,7 +70,17 @@ describe("Airport", function() {
     it('Should check weather before #orderLand', function() {
       airport.orderLand(plane, weatherStation);
       expect(weatherStation.generateWeather).toHaveBeenCalled();
-  });
+    });
+
+    it('Should prevent landing if stormy', function(){
+      expect(function() {airport.orderLand(plane, badWeatherStation)}).toThrow('The weather is too bad for landing')
+    });
+
+    it('Should prevent takeOff if stormy', function(){
+      airport.orderLand(plane, weatherStation);
+      expect(function () {airport.orderTakeoff(plane, badWeatherStation)}).toThrow('The weather is too bad for take off')
+
+    });
 
 });
 });
