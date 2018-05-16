@@ -1,12 +1,14 @@
 describe("Airport", function() {
-    var airport = new Airport;
-    var plane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
-    var weatherStation = jasmine.createSpyObj('weatherStation', ['generateWeather'] );
-    var badWeatherStation = jasmine.createSpyObj('badWeatherStation', {'generateWeather':'stormy'});
-    afterEach(function(){
+  var airport = new Airport;
+  var plane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
+  var anotherPlane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
+  var yetAnotherPlane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
+  var weatherStation = jasmine.createSpyObj('weatherStation', ['generateWeather'] );
+  var badWeatherStation = jasmine.createSpyObj('badWeatherStation', {'generateWeather':'stormy'});
+  afterEach(function(){
 
-      airport.planes = [];
-    });
+    airport.planes = [];
+  });
 
   describe('Create new instance of airport', function() {
     it('Creates new airport object', function() {
@@ -23,27 +25,29 @@ describe("Airport", function() {
 });
 
   describe('Airport lands Planes', function () {
-      it('Issues command to #land', function () {
-        airport.orderLand(plane, weatherStation);
-        expect(plane.land).toHaveBeenCalled();
-      });
+    beforeEach(function () {
+      airport.capacity = 2;
+    });
+    it('Issues command to #land', function () {
+      airport.orderLand(plane, weatherStation);
+      expect(plane.land).toHaveBeenCalled();
+    });
 
-      it('Pushes plane into planes array upon landing', function(){
-        airport.orderLand(plane, weatherStation);
-        expect(airport.planes).toContain(plane);
+    it('Pushes plane into planes array upon landing', function(){
+      airport.orderLand(plane, weatherStation);
+      expect(airport.planes).toContain(plane);
+    });
 
-      });
+    it('Doesn\'t allow a plane to land if airport is at full capacity', function(){
+      airport.orderLand(plane, weatherStation);
+      airport.orderLand(yetAnotherPlane, weatherStation);
+      expect(function() {airport.orderLand(anotherPlane, weatherStation)}).toThrow('Airport Full');
+    });
 
-      it('Doesn\'t allow a plane to land if airport is at full capacity', function(){
-        for (i =1; i <=10; i++) {
-          airport.orderLand(plane, weatherStation);
-        };
-        // console.log(airport.capacity);
-        // // airport.orderLand(plane, weatherStation);
-        // console.log(airport.capacity);
-        expect(function() {airport.orderLand(plane, weatherStation)}).toThrow('Airport Full');
-
-      });
+    it('should prevent the plane from landing if it is already parked', function () {
+      airport.orderLand(plane, weatherStation);
+      expect(function () {airport.orderLand(plane, weatherStation)}).toThrow('Plane already docked');
+    });
   });
 
   describe('Airpot orders planes to take off', function(){
@@ -51,7 +55,10 @@ describe("Airport", function() {
        airport.orderLand(plane, weatherStation);
        airport.orderTakeoff(plane, weatherStation);
        expect(airport.planes).not.toContain(plane);
+    });
 
+    it('should throw an error if the plane is not in the airport', function () {
+      expect(function () {airport.orderTakeoff(plane, weatherStation)}).toThrow('Plane is not at the airport')
     });
 
   });
