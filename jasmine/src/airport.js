@@ -7,6 +7,9 @@ var Airport = function() {
 
 Airport.prototype.orderLand = function(plane, weatherStation) {
   weatherStation.generateWeather();
+  if (this.planes.length >= this.capacity){
+    throw 'Airport Full';
+  };
   plane.land();
   this.planes.push(plane);
 };

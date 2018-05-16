@@ -33,6 +33,17 @@ describe("Airport", function() {
         expect(airport.planes).toContain(plane);
 
       });
+
+      it('Doesn\'t allow a plane to land if airport is at full capacity', function(){
+        for (i =1; i <=10; i++) {
+          airport.orderLand(plane, weatherStation);
+        };
+        // console.log(airport.capacity);
+        // // airport.orderLand(plane, weatherStation);
+        // console.log(airport.capacity);
+        expect(function() {airport.orderLand(plane, weatherStation)}).toThrow('Airport Full');
+
+      });
   });
 
   describe('Airpot orders planes to take off', function(){
