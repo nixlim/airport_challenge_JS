@@ -8,8 +8,10 @@ var Airport = function() {
 Airport.prototype.orderLand = function(plane, weatherStation) {
   weatherStation.generateWeather();
   plane.land();
+  this.planes.push(plane);
 };
 
-Airport.prototype.orderTakeoff = function (plane) {
+Airport.prototype.orderTakeoff = function (plane, weatherStation) {
   plane.takeoff();
+  this.planes.splice(this.planes.indexOf(plane), 1);
 }

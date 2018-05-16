@@ -1,4 +1,4 @@
-var WeatherStation = function () {
+var WeatherStation = function() {
 
 };
 

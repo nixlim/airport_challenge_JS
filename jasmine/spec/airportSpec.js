@@ -3,7 +3,10 @@ describe("Airport", function() {
     var plane = jasmine.createSpyObj('plane', ['land', 'takeoff']);
     var weatherStation = jasmine.createSpyObj('weatherStation', ['generateWeather'] );
     var badWeatherStation = jasmine.createSpyObj('badWeatherStation', {'generateWeather':'stormy'});
+    afterEach(function(){
 
+      airport.planes = [];
+    });
 
   describe('Create new instance of airport', function() {
     it('Creates new airport object', function() {
@@ -19,11 +22,27 @@ describe("Airport", function() {
     });
 });
 
-  describe('Airport can call #land on Plane', function () {
+  describe('Airport lands Planes', function () {
       it('Issues command to #land', function () {
         airport.orderLand(plane, weatherStation);
         expect(plane.land).toHaveBeenCalled();
       });
+
+      it('Pushes plane into planes array upon landing', function(){
+        airport.orderLand(plane, weatherStation);
+        expect(airport.planes).toContain(plane);
+
+      });
+  });
+
+  describe('Airpot orders planes to take off', function(){
+    it('Removes plane from planes array upon takeoff', function(){
+       airport.orderLand(plane, weatherStation);
+       airport.orderTakeoff(plane, weatherStation);
+       expect(airport.planes).not.toContain(plane);
+
+    });
+
   });
 
   describe('Airport checks weather', function() {
